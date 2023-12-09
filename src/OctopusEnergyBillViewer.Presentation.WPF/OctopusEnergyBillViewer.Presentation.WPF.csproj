@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>OctopusEnergyBillViewer</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ReactiveProperty.WPF" Version="9.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OctopusEnergyBillViewer.Model\OctopusEnergyBillViewer.Model.csproj" />
+    <ProjectReference Include="..\OctopusEnergyBillViewer.Service\OctopusEnergyBillViewer.Service.csproj" />
+  </ItemGroup>
+
+</Project>

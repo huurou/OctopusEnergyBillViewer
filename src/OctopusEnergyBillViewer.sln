@@ -3,7 +3,37 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctopusEnergyBillViewer.Presentation.WPF", "OctopusEnergyBillViewer.Presentation.WPF\OctopusEnergyBillViewer.Presentation.WPF.csproj", "{C2469E82-F3E3-43A1-AC0A-B36920F97B53}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctopusEnergyBillViewer.Model", "OctopusEnergyBillViewer.Model\OctopusEnergyBillViewer.Model.csproj", "{2CE271F5-2C37-4731-9F44-26F26806FFD4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctopusEnergyBillViewer.Test", "OctopusEnergyBillViewer.Test\OctopusEnergyBillViewer.Test.csproj", "{BC547FFB-F47C-4464-8E69-006067414046}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctopusEnergyBillViewer.Service", "OctopusEnergyBillViewer.Service\OctopusEnergyBillViewer.Service.csproj", "{87107238-8224-4899-84F0-1B46F2E179E5}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C2469E82-F3E3-43A1-AC0A-B36920F97B53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2469E82-F3E3-43A1-AC0A-B36920F97B53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2469E82-F3E3-43A1-AC0A-B36920F97B53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2469E82-F3E3-43A1-AC0A-B36920F97B53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CE271F5-2C37-4731-9F44-26F26806FFD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CE271F5-2C37-4731-9F44-26F26806FFD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CE271F5-2C37-4731-9F44-26F26806FFD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CE271F5-2C37-4731-9F44-26F26806FFD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC547FFB-F47C-4464-8E69-006067414046}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC547FFB-F47C-4464-8E69-006067414046}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC547FFB-F47C-4464-8E69-006067414046}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC547FFB-F47C-4464-8E69-006067414046}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87107238-8224-4899-84F0-1B46F2E179E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87107238-8224-4899-84F0-1B46F2E179E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87107238-8224-4899-84F0-1B46F2E179E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87107238-8224-4899-84F0-1B46F2E179E5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection

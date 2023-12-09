@@ -1,0 +1,42 @@
+﻿<Window x:Class="OctopusEnergyBillViewer.Presentation.WPF.Dialogs.LoginDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:ap="clr-namespace:OctopusEnergyBillViewer.Presentation.WPF.AttachedProperties"
+        xmlns:b="clr-namespace:OctopusEnergyBillViewer.Presentation.WPF.Behaviors"
+        xmlns:local="clr-namespace:OctopusEnergyBillViewer.Presentation.WPF.Dialogs"
+        xmlns:ri="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.WPF"
+        Title="LoginDialog" Height="450" Width="800"
+        ap:AttachedDialogResult.DialogResult="{Binding DialogResult.Value}">
+    <Window.DataContext>
+        <local:LoginDialogViewModel />
+    </Window.DataContext>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <ri:EventToReactiveCommand Command="{Binding LoadedCmd}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0">Eメールアドレス</Label>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding EmailAddress.Value, UpdateSourceTrigger=PropertyChanged}" />
+        <Label Grid.Row="1" Grid.Column="0">パスワード</Label>
+        <PasswordBox  Grid.Row="1" Grid.Column="1">
+            <i:Interaction.Behaviors>
+                <b:PasswordBindingBehavior Password="{Binding Password.Value}" />
+            </i:Interaction.Behaviors>
+        </PasswordBox>
+        <Label Grid.Row="2" Grid.Column="0">お客様番号</Label>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding AccountNumber.Value, UpdateSourceTrigger=PropertyChanged}" />
+        <Button Grid.Row="3" Grid.ColumnSpan="2" Command="{Binding OkCmd}">OK</Button>
+    </Grid>
+</Window>
