@@ -87,8 +87,8 @@ public class OctpusEnergyApiGraphql : IOctpusEnergyApi
             Variables = new
             {
                 accountNumber = accountNumber.Value,
-                fromDatetime,
-                toDatetime
+                fromDatetime = fromDatetime.ToString("O"),
+                toDatetime = toDatetime.ToString("O"),
             },
             Authorization = accessToken.Value,
         };

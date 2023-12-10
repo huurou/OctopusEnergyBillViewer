@@ -40,20 +40,22 @@ public class MainWindowViewModel : ViewModelBase
                 }
                 else if (result is FetchReadingsResultFailure failure)
                 {
-                    switch (failure.Reason)
-                    {
-                        case FetchReadingsResultFailureReason.Unknown:
-                            break;
-
-                        case FetchReadingsResultFailureReason.NoAccountNumber:
-                        case FetchReadingsResultFailureReason.InvalidLoginInfo:
-                            DialogService.Show<LoginDialog, LoginDialogViewModel>();
-                            break;
-
-                        default:
-                            break;
-                    }
+                    ProcessFetchReadingsResultFailure(failure);
                 }
             });
+    }
+
+    private static void ProcessFetchReadingsResultFailure(FetchReadingsResultFailure failure)
+    {
+        switch (failure.Reason)
+        {
+            case FetchReadingsResultFailureReason.NoAccountNumber:
+            case FetchReadingsResultFailureReason.InvalidLoginInfo:
+                DialogService.Show<LoginDialog, LoginDialogViewModel>();
+                break;
+
+            default:
+                break;
+        }
     }
 }
