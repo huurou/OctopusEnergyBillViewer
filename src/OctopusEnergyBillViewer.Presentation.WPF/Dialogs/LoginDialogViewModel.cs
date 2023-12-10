@@ -1,4 +1,5 @@
 ﻿using OctopusEnergyBillViewer.Model;
+using OctopusEnergyBillViewer.Model.OctopusEnergyApis;
 using OctopusEnergyBillViewer.Service;
 using Reactive.Bindings;
 using System.Reactive.Linq;

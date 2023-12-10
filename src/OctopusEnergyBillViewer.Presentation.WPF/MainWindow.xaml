@@ -24,9 +24,9 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Button Grid.Row="0" Grid.Column="0" Command="{Binding YesterdayCmd}">昨日</Button>
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding UsageYesterday.Value}" />
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding UsageYesterday.Value}" />
         <Label Grid.Row="0" Grid.Column="2">kWh</Label>
-        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding CostYesterday.Value}" />
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CostYesterday.Value}" />
         <Label Grid.Row="1" Grid.Column="2">円</Label>
     </Grid>
 </Window>

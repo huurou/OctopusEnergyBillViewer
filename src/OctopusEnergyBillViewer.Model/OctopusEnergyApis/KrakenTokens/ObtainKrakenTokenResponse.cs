@@ -1,3 +1,3 @@
-﻿namespace OctopusEnergyBillViewer.Model;
+﻿namespace OctopusEnergyBillViewer.Model.OctopusEnergyApis.KrakenTokens;
 
 public record class ObtainKrakenTokenResponse(ObtainKrakenJsonWebTokenData ObtainKrakenToken);

@@ -1,12 +1,14 @@
 ﻿using GraphQL;
-using GraphQL.Client.Abstractions;
 using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.SystemTextJson;
+using OctopusEnergyBillViewer.Model.Accounts;
+using OctopusEnergyBillViewer.Model.Credentials;
+using OctopusEnergyBillViewer.Model.OctopusEnergyApis.Accounts;
+using OctopusEnergyBillViewer.Model.OctopusEnergyApis.Accounts.Readings;
+using OctopusEnergyBillViewer.Model.OctopusEnergyApis.KrakenTokens;
 using System.Collections.ObjectModel;
-using System.Text.Encodings.Web;
-using System.Text.Json;
 
-namespace OctopusEnergyBillViewer.Model;
+namespace OctopusEnergyBillViewer.Model.OctopusEnergyApis;
 
 public class OctpusEnergyApiGraphql : IOctpusEnergyApi
 {
@@ -94,62 +96,5 @@ public class OctpusEnergyApiGraphql : IOctpusEnergyApi
         return response.Errors is GraphQLError[] errors
             ? throw new OctopusEnergyGraphqlException(errors)
             : response.Data.Account.Properties.First().ElectricitySupplyPoints.First().HalfHourlyReadings.Select(x => x.ToModel()).ToList().AsReadOnly();
-    }
-}
-
-public class GraphQLHttpRequestWithAuthorization : GraphQLHttpRequest
-{
-    public string? Authorization { get; set; }
-
-    public override HttpRequestMessage ToHttpRequestMessage(GraphQLHttpClientOptions options, IGraphQLJsonSerializer serializer)
-    {
-        var message = base.ToHttpRequestMessage(options, serializer);
-        if (!string.IsNullOrEmpty(Authorization))
-        {
-            message.Headers.Add("Authorization", Authorization);
-        }
-        return message;
-    }
-}
-
-public class OctopusEnergyGraphqlException(GraphQLError[] errors) : Exception
-{
-    private static readonly JsonSerializerOptions options_ = new(JsonSerializerDefaults.Web) { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
-
-    public GraphQLError[] Errors { get; } = errors;
-
-    public override string Message { get; } = JsonSerializer.Serialize(errors, options_);
-    public OctopusEnergyGraphqlExtensions? Extensions { get; } = JsonSerializer.Deserialize<OctopusEnergyGraphqlExtensions>(JsonSerializer.Serialize(errors[0].Extensions));
-}
-
-#pragma warning disable IDE1006 // 命名スタイル
-
-public record OctopusEnergyGraphqlExtensions(string errorType, string errorCode, string errorDescription, string errorClass, List<OctopusEnergyGraphqlValidationError> validationErrors);
-
-public record OctopusEnergyGraphqlValidationError(string message, string[] inputPath);
-
-#pragma warning restore IDE1006 // 命名スタイル
-
-/// <summary>
-/// 電気使用量 単位：kwh
-/// </summary>
-/// <param name="Value">値</param>
-public record class Usage(double Value);
-/// <summary>
-/// 推定電気代 単位：円
-/// </summary>
-/// <param name="Value">値</param>
-public record class Cost(double Value);
-public record class HalfHourlyReading(DateTime StartAt, DateTime EndAt, Usage Usage, Cost Cost);
-
-public record class AccountResponse(Account Account);
-public record class Account(List<Property> Properties);
-public record class Property(List<ElectricitySupplyPointData> ElectricitySupplyPoints);
-public record class ElectricitySupplyPointData(List<HalfHourlyReadingData> HalfHourlyReadings);
-public record class HalfHourlyReadingData(DateTime StartAt, DateTime EndAt, string Value, string CostEstimate)
-{
-    public HalfHourlyReading ToModel()
-    {
-        return new(StartAt, EndAt, new(double.Parse(Value)), new(double.Parse(CostEstimate)));
     }
 }

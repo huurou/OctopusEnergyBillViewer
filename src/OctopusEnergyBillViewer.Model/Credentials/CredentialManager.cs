@@ -1,15 +1,10 @@
-﻿using OctopusEnergyBillViewer.Model.Events;
+﻿using OctopusEnergyBillViewer.Model.Credentials;
 using OctopusEnergyBillViewer.Model.Settings;
 
-namespace OctopusEnergyBillViewer.Model;
+namespace OctopusEnergyBillViewer.Model.Accounts;
 
 public class CredentialManager(IOctpusEnergyApi api, ISettingRepository settingRepository)
 {
-    /// <summary>
-    /// ログイン情報入力要求イベント
-    /// </summary>
-    public Event LoginInfoInputRequest { get; } = new();
-
     public async Task<EmailAddress> GetEmailAddressAsync()
     {
         var setting = await settingRepository.LoadAsync();

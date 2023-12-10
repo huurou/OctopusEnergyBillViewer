@@ -3,6 +3,9 @@ using NLog.Config;
 using NLog.Extensions.Logging;
 using NLog.Targets;
 using OctopusEnergyBillViewer.Model;
+using OctopusEnergyBillViewer.Model.Accounts;
+using OctopusEnergyBillViewer.Model.OctopusEnergyApis;
+using OctopusEnergyBillViewer.Model.OctopusEnergyApis.Accounts;
 using OctopusEnergyBillViewer.Model.Settings;
 using System.Diagnostics;
 
@@ -20,6 +23,7 @@ public static class Di
         var services = new ServiceCollection();
         services.AddSingleton<ApplicationService>();
         services.AddSingleton<CredentialManager>();
+        services.AddSingleton<AccountFetcher>();
         services.AddSingleton<IOctpusEnergyApi, OctpusEnergyApiGraphql>();
         services.AddSingleton<ISettingRepository, SettingRepositoryJson>();
         services.AddLogging(

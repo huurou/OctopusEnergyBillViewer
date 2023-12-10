@@ -1,4 +1,5 @@
 ﻿using OctopusEnergyBillViewer.Model;
+using OctopusEnergyBillViewer.Model.OctopusEnergyApis.Accounts.Readings;
 using OctopusEnergyBillViewer.Presentation.WPF.Dialogs;
 using OctopusEnergyBillViewer.Service;
 using Reactive.Bindings;
@@ -7,8 +8,8 @@ namespace OctopusEnergyBillViewer.Presentation.WPF;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    public ReactivePropertySlim<double> UsageYesterday { get; } = new();
-    public ReactivePropertySlim<double> CostYesterday { get; } = new();
+    public ReactivePropertySlim<decimal> UsageYesterday { get; } = new();
+    public ReactivePropertySlim<decimal> CostYesterday { get; } = new();
 
     public ReactiveCommand LoadedCmd { get; } = new();
     public ReactiveCommand YesterdayCmd { get; } = new();
