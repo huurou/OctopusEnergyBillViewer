@@ -13,7 +13,7 @@ internal class WpfHost
             services =>
             {
                 services.AddHostedService<WpfHostedService>();
-                services.AddSingleton<Application>();
+                services.AddSingleton<Application, App>();
                 services.AddSingleton<MainWindow>();
                 services.AddSingleton<MainWindowViewModel>();
             });
