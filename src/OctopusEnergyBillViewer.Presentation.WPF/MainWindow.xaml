@@ -3,12 +3,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OctopusEnergyBillViewer.Presentation.WPF"
         xmlns:ri="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.WPF"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="1000">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <ri:EventToReactiveCommand Command="{Binding LoadedCmd}" />
@@ -16,7 +17,8 @@
     </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition />
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -27,7 +29,16 @@
         <Button Grid.Row="0" Grid.Column="0" Command="{Binding YesterdayCmd}">昨日</Button>
         <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding UsageYesterday.Value}" />
         <Label Grid.Row="0" Grid.Column="2">kWh</Label>
+        <Button Grid.Row="1" Grid.Column="0" Content="週" Command="{Binding WeekCmd}"/>
         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CostYesterday.Value}" />
         <Label Grid.Row="1" Grid.Column="2">円</Label>
+        <lvc:CartesianChart Grid.Row="2" Grid.ColumnSpan="3" Series="{Binding SeriesCollection.Value}" >
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis Title="Salesman" Labels="{Binding Labels.Value}"></lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis Title="Sold Apps" LabelFormatter="{Binding Formatter}"></lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+        </lvc:CartesianChart>
     </Grid>
 </Window>
