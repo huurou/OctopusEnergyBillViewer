@@ -7,9 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctopusEnergyBillViewer.Pre
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctopusEnergyBillViewer.Model", "OctopusEnergyBillViewer.Model\OctopusEnergyBillViewer.Model.csproj", "{2CE271F5-2C37-4731-9F44-26F26806FFD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctopusEnergyBillViewer.Test", "OctopusEnergyBillViewer.Test\OctopusEnergyBillViewer.Test.csproj", "{BC547FFB-F47C-4464-8E69-006067414046}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctopusEnergyBillViewer.Service", "OctopusEnergyBillViewer.Service\OctopusEnergyBillViewer.Service.csproj", "{87107238-8224-4899-84F0-1B46F2E179E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctopusEnergyBillViewer.Test", "OctopusEnergyBillViewer.Test\OctopusEnergyBillViewer.Test.csproj", "{BC547FFB-F47C-4464-8E69-006067414046}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +27,6 @@ Global
 		{BC547FFB-F47C-4464-8E69-006067414046}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC547FFB-F47C-4464-8E69-006067414046}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC547FFB-F47C-4464-8E69-006067414046}.Release|Any CPU.Build.0 = Release|Any CPU
-		{87107238-8224-4899-84F0-1B46F2E179E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{87107238-8224-4899-84F0-1B46F2E179E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{87107238-8224-4899-84F0-1B46F2E179E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{87107238-8224-4899-84F0-1B46F2E179E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,12 +1,12 @@
 ﻿using OctopusEnergyBillViewer.Model;
 using OctopusEnergyBillViewer.Model.OctopusEnergyApis;
-using OctopusEnergyBillViewer.Service;
 using Reactive.Bindings;
 using System.Reactive.Linq;
+using System.Windows;
 
 namespace OctopusEnergyBillViewer.Presentation.WPF.Dialogs;
 
-internal class LoginDialogViewModel : ViewModelBase
+public class LoginDialogViewModel : ViewModelBase
 {
     public ReactivePropertySlim<bool?> DialogResult { get; } = new();
     public ReactivePropertySlim<string> EmailAddress { get; } = new();
@@ -16,9 +16,7 @@ internal class LoginDialogViewModel : ViewModelBase
     public ReactiveCommand LoadedCmd { get; } = new();
     public ReactiveCommand OkCmd { get; }
 
-    private readonly ApplicationService appService_ = Di.ApplicationService;
-
-    public LoginDialogViewModel()
+    public LoginDialogViewModel(IMessageBoxService messageBoxService, ApplicationService appService)
     {
         OkCmd = EmailAddress.Select(x => !string.IsNullOrEmpty(x))
             .CombineLatest(Password.Select(x => !string.IsNullOrEmpty(x)), (x, y) => x && y)
@@ -28,18 +26,18 @@ internal class LoginDialogViewModel : ViewModelBase
         LoadedCmd.Subscribe(
             async () =>
             {
-                EmailAddress.Value = (await appService_.GetEmailAddressAsync()).Value;
-                Password.Value = (await appService_.GetPasswordAsync()).Value;
-                AccountNumber.Value = (await appService_.GetAccountNumberAsync()).Value;
+                EmailAddress.Value = (await appService.GetEmailAddressAsync()).Value;
+                Password.Value = (await appService.GetPasswordAsync()).Value;
+                AccountNumber.Value = (await appService.GetAccountNumberAsync()).Value;
             });
         OkCmd.Subscribe(
             async () =>
             {
                 try
                 {
-                    await appService_.LoginAsync(new(EmailAddress.Value), new(Password.Value));
-                    await appService_.SetAccountNumberAsync(new(AccountNumber.Value));
-                    MessageBoxEx.Show("ログイン成功！");
+                    await appService.LoginAsync(new(EmailAddress.Value), new(Password.Value));
+                    await appService.SetAccountNumberAsync(new(AccountNumber.Value));
+                    messageBoxService.Show("ログイン成功！");
                     DialogResult.Value = true;
                 }
                 catch (OctopusEnergyGraphqlException ex)
@@ -47,7 +45,7 @@ internal class LoginDialogViewModel : ViewModelBase
                     switch (ex.Extensions?.errorType)
                     {
                         case "VALIDATION":
-                            MessageBoxEx.Show("ログインに失敗しました。", "エラー", icon: System.Windows.MessageBoxImage.Error);
+                            messageBoxService.Show("ログインに失敗しました。", "エラー", icon: MessageBoxImage.Error);
                             break;
 
                         default: throw;

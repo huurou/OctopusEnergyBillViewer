@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace OctopusEnergyBillViewer.Model;
 
-public interface IOctpusEnergyApi
+public interface IOctopusEnergyApi
 {
     Task<ObtainKrakenJsonWebToken> ObtainKrakenTokenAsync(EmailAddress email, Password password);
 

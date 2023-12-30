@@ -7,8 +7,9 @@ namespace OctopusEnergyBillViewer.Presentation.WPF.Dialogs;
 /// </summary>
 public partial class LoginDialog : Window
 {
-    public LoginDialog()
+    public LoginDialog(LoginDialogViewModel viewModel)
     {
         InitializeComponent();
+        DataContext = viewModel;
     }
 }

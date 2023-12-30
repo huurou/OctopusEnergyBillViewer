@@ -3,7 +3,7 @@ using OctopusEnergyBillViewer.Model.Settings;
 
 namespace OctopusEnergyBillViewer.Model.Accounts;
 
-public class CredentialManager(IOctpusEnergyApi api, ISettingRepository settingRepository)
+public class CredentialManager(IOctopusEnergyApi api, ISettingRepository settingRepository)
 {
     public async Task<EmailAddress> GetEmailAddressAsync()
     {

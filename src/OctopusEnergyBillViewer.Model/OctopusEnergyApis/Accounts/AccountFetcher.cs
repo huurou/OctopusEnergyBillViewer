@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace OctopusEnergyBillViewer.Model.OctopusEnergyApis.Accounts;
 
-public class AccountFetcher(CredentialManager credentialManager, IOctpusEnergyApi api)
+public class AccountFetcher(CredentialManager credentialManager, IOctopusEnergyApi api)
 {
     public async Task<FetchReadingsResult> FetchHalfHourReadings(DateTime from, DateTime to)
     {
@@ -41,13 +41,22 @@ public class AccountFetcher(CredentialManager credentialManager, IOctpusEnergyAp
                             {
                                 return new FetchReadingsResultFailure(FetchReadingsResultFailureReason.InvalidLoginInfo);
                             }
-                            else throw;
+                            else
+                            {
+                                throw;
+                            }
                         }
                     }
-                    else throw;
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
-            else throw;
+            else
+            {
+                throw;
+            }
         }
 
         async Task<ReadOnlyCollection<HalfHourlyReading>> ObtainReadings()

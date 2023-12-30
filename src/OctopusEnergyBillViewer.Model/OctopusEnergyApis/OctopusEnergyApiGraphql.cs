@@ -1,6 +1,7 @@
 ﻿using GraphQL;
 using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.SystemTextJson;
+using Microsoft.Extensions.Logging;
 using OctopusEnergyBillViewer.Model.Accounts;
 using OctopusEnergyBillViewer.Model.Credentials;
 using OctopusEnergyBillViewer.Model.OctopusEnergyApis.Accounts;
@@ -10,9 +11,11 @@ using System.Collections.ObjectModel;
 
 namespace OctopusEnergyBillViewer.Model.OctopusEnergyApis;
 
-public class OctpusEnergyApiGraphql : IOctpusEnergyApi
+public class OctopusEnergyApiGraphql(ILoggerFactory loggerFactory) : IOctopusEnergyApi
 {
     private const string URL = "https://api.oejp-kraken.energy/v1/graphql/";
+
+    private readonly ILogger<OctopusEnergyApiGraphql> logger_ = loggerFactory.CreateLogger<OctopusEnergyApiGraphql>();
 
     public async Task<ObtainKrakenJsonWebToken> ObtainKrakenTokenAsync(EmailAddress email, Password password)
     {
@@ -33,7 +36,9 @@ public class OctpusEnergyApiGraphql : IOctpusEnergyApi
                 password = password.Value,
             },
         };
+        logger_.LogDebug("トークン取得リクエスト url:{url} query:{query} variables:{variables}", URL, request.Query, request.Variables);
         var response = await client.SendMutationAsync<ObtainKrakenTokenResponse>(request);
+        logger_.LogDebug("トークン取得レスポンス data:{data} errors:{errors} extentions:{extentions}", response.Data, response.Errors, response.Extensions);
         return response.Errors is GraphQLError[] errors
             ? throw new OctopusEnergyGraphqlException(errors)
             : response.Data.ObtainKrakenToken.ToModel();
@@ -54,7 +59,9 @@ public class OctpusEnergyApiGraphql : IOctpusEnergyApi
             """,
             Variables = new { refreshToken = refreshToken.Value }
         };
+        logger_.LogDebug("トークン取得リクエスト url:{url} query:{query} variables:{variables}", URL, request.Query, request.Variables);
         var response = await client.SendMutationAsync<ObtainKrakenTokenResponse>(request);
+        logger_.LogDebug("トークン取得レスポンス data:{data} errors:{errors} extentions:{extentions}", response.Data, response.Errors, response.Extensions);
         return response.Errors is GraphQLError[] errors
             ? throw new OctopusEnergyGraphqlException(errors)
             : response.Data.ObtainKrakenToken.ToModel();
@@ -92,7 +99,9 @@ public class OctpusEnergyApiGraphql : IOctpusEnergyApi
             },
             Authorization = accessToken.Value,
         };
+        logger_.LogDebug("Readings取得リクエスト url:{url} query:{query} variables:{variables}", URL, request.Query, request.Variables);
         var response = await client.SendQueryAsync<AccountResponse>(request);
+        logger_.LogDebug("Readings取得レスポンス data:{data} errors:{errors} extentions:{extentions}", response.Data, response.Errors, response.Extensions);
         return response.Errors is GraphQLError[] errors
             ? throw new OctopusEnergyGraphqlException(errors)
             : response.Data.Account.Properties.First().ElectricitySupplyPoints.First().HalfHourlyReadings.Select(x => x.ToModel()).ToList().AsReadOnly();

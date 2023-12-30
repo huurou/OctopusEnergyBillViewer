@@ -55,8 +55,16 @@ public static partial class MessageBoxEx
         MessageBoxButton button = MessageBoxButton.OK,
         MessageBoxImage icon = MessageBoxImage.None)
     {
-        if (owner is null) return MessageBox.Show(message, title, button, icon);
-        if (owner.WindowState == WindowState.Minimized) return MessageBox.Show(owner, message, title, button, icon);
+        if (owner is null)
+        {
+            return MessageBox.Show(message, title, button, icon);
+        }
+
+        if (owner.WindowState == WindowState.Minimized)
+        {
+            return MessageBox.Show(owner, message, title, button, icon);
+        }
+
         owner_ = owner;
         var hwndSource = (HwndSource)PresentationSource.FromVisual(owner_);
         var hInstance = NativeMethods.GetWindowLongPtr(hwndSource.Handle, NativeMethods.GWL_HINSTANCE);
@@ -68,7 +76,11 @@ public static partial class MessageBoxEx
 
     private static IntPtr HookProc(int nCode, IntPtr wParam, IntPtr lParam)
     {
-        if (nCode != NativeMethods.HCBT_ACTIVATE) return NativeMethods.CallNextHookEx(hHook_, nCode, wParam, lParam);
+        if (nCode != NativeMethods.HCBT_ACTIVATE)
+        {
+            return NativeMethods.CallNextHookEx(hHook_, nCode, wParam, lParam);
+        }
+
         var hwndSource = (HwndSource)PresentationSource.FromVisual(owner_);
         NativeMethods.GetWindowRect(hwndSource.Handle, out var rcForm);
         NativeMethods.GetWindowRect(wParam, out var rcMsgBox);

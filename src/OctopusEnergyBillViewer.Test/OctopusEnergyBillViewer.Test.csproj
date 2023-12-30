@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OctopusEnergyBillViewer.Model\OctopusEnergyBillViewer.Model.csproj" />
-    <ProjectReference Include="..\OctopusEnergyBillViewer.Service\OctopusEnergyBillViewer.Service.csproj" />
   </ItemGroup>
 
 </Project>

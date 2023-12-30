@@ -1,7 +1,6 @@
 ﻿using OctopusEnergyBillViewer.Model;
 using OctopusEnergyBillViewer.Model.OctopusEnergyApis.Accounts.Readings;
 using OctopusEnergyBillViewer.Presentation.WPF.Dialogs;
-using OctopusEnergyBillViewer.Service;
 using Reactive.Bindings;
 
 namespace OctopusEnergyBillViewer.Presentation.WPF;
@@ -14,25 +13,27 @@ public class MainWindowViewModel : ViewModelBase
     public ReactiveCommand LoadedCmd { get; } = new();
     public ReactiveCommand YesterdayCmd { get; } = new();
 
-    private readonly ApplicationService appService_ = Di.ApplicationService;
+    private readonly IDialogService<LoginDialog> loginDialogService_;
 
-    public MainWindowViewModel()
+    public MainWindowViewModel(IDialogService<LoginDialog> loginDialogService, ApplicationService appService)
     {
+        loginDialogService_ = loginDialogService;
+
         LoadedCmd.Subscribe(
             async () =>
             {
                 // 起動時にログイン情報かお客様番号がなければログインしてもらう
-                if (string.IsNullOrEmpty((await appService_.GetEmailAddressAsync()).Value) ||
-                    string.IsNullOrEmpty((await appService_.GetPasswordAsync()).Value) ||
-                    string.IsNullOrEmpty((await appService_.GetAccountNumberAsync()).Value))
+                if (string.IsNullOrEmpty((await appService.GetEmailAddressAsync()).Value) ||
+                    string.IsNullOrEmpty((await appService.GetPasswordAsync()).Value) ||
+                    string.IsNullOrEmpty((await appService.GetAccountNumberAsync()).Value))
                 {
-                    DialogService.Show<LoginDialog, LoginDialogViewModel>();
+                    loginDialogService.ShowDialog();
                 }
             });
         YesterdayCmd.Subscribe(
             async () =>
             {
-                var result = await appService_.FetchReadings(DateTime.Today.AddDays(-1), DateTime.Today);
+                var result = await appService.FetchReadings(DateTime.Today.AddDays(-1), DateTime.Today);
                 if (result is FetchReadingsResultSuccess success)
                 {
                     UsageYesterday.Value = success.Readings.Sum(x => x.Usage.Value);
@@ -45,13 +46,13 @@ public class MainWindowViewModel : ViewModelBase
             });
     }
 
-    private static void ProcessFetchReadingsResultFailure(FetchReadingsResultFailure failure)
+    private void ProcessFetchReadingsResultFailure(FetchReadingsResultFailure failure)
     {
         switch (failure.Reason)
         {
             case FetchReadingsResultFailureReason.NoAccountNumber:
             case FetchReadingsResultFailureReason.InvalidLoginInfo:
-                DialogService.Show<LoginDialog, LoginDialogViewModel>();
+                loginDialogService_.ShowDialog();
                 break;
 
             default:

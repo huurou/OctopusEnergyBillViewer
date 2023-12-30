@@ -7,32 +7,33 @@ using OctopusEnergyBillViewer.Model.Accounts;
 using OctopusEnergyBillViewer.Model.OctopusEnergyApis;
 using OctopusEnergyBillViewer.Model.OctopusEnergyApis.Accounts;
 using OctopusEnergyBillViewer.Model.Settings;
+using OctopusEnergyBillViewer.Presentation.WPF;
+using OctopusEnergyBillViewer.Presentation.WPF.Dialogs;
 using System.Diagnostics;
+using System.IO;
 
-namespace OctopusEnergyBillViewer.Service;
-
-public static class Di
-{
-    public static ApplicationService ApplicationService => provider_.GetRequiredService<ApplicationService>();
-
-    private static readonly string processName_ = Process.GetCurrentProcess().ProcessName;
-    private static readonly IServiceProvider provider_;
-
-    static Di()
+WpfHost.Run(
+    args,
+    services =>
     {
-        var services = new ServiceCollection();
+        services.AddTransient<LoginDialog>();
+        services.AddTransient<LoginDialogViewModel>();
+        services.AddSingleton<IDialogService<LoginDialog>, DialogService<LoginDialog>>();
+        services.AddSingleton<IMessageBoxService, MessageBoxService>();
+
         services.AddSingleton<ApplicationService>();
         services.AddSingleton<CredentialManager>();
         services.AddSingleton<AccountFetcher>();
-        services.AddSingleton<IOctpusEnergyApi, OctpusEnergyApiGraphql>();
+        services.AddSingleton<IOctopusEnergyApi, OctopusEnergyApiGraphql>();
         services.AddSingleton<ISettingRepository, SettingRepositoryJson>();
         services.AddLogging(
             loggingBuilder =>
             {
+                var processName = Process.GetCurrentProcess().ProcessName;
                 var layout = "${longdate} [${level:uppercase=true}] [${logger}] ${message}${onexception:${newline}${exception}}";
                 var logFile = new FileTarget("logfile")
                 {
-                    FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), processName_, "Logs", "${shortdate}.log"),
+                    FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), processName, "Logs", "${shortdate}.log"),
                     Layout = layout,
                 };
                 var logdebugger = new DebuggerTarget("logdebugger") { Layout = layout };
@@ -40,9 +41,5 @@ public static class Di
                 config.AddRule(NLog.LogLevel.Debug, NLog.LogLevel.Fatal, logFile);
                 config.AddRule(NLog.LogLevel.Debug, NLog.LogLevel.Fatal, logdebugger);
                 loggingBuilder.AddNLog(config);
-            }
-        );
-
-        provider_ = services.BuildServiceProvider();
-    }
-}
+            });
+    });
