@@ -34,10 +34,10 @@
         <Label Grid.Row="1" Grid.Column="2">円</Label>
         <lvc:CartesianChart Grid.Row="2" Grid.ColumnSpan="3" Series="{Binding SeriesCollection.Value}" >
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis Title="Salesman" Labels="{Binding Labels.Value}"></lvc:Axis>
+                <lvc:Axis Title="日付" Labels="{Binding Labels.Value}"></lvc:Axis>
             </lvc:CartesianChart.AxisX>
             <lvc:CartesianChart.AxisY>
-                <lvc:Axis Title="Sold Apps" LabelFormatter="{Binding Formatter}"></lvc:Axis>
+                <lvc:Axis Title="使用量[kwh]" LabelFormatter="{Binding Formatter.Value}"></lvc:Axis>
             </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
     </Grid>

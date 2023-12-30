@@ -15,47 +15,38 @@ public class AccountFetcher(CredentialManager credentialManager, IOctopusEnergyA
         catch (OctopusEnergyGraphqlException ex1)
         {
             // ヘッダーにAuthorizationがない or アクセストークンが異常
-            if (ex1.Extensions?.errorType == "AUTHORIZATION" ||
-            // AccessToken期限切れ
-                ex1.Extensions?.errorType == "APPLICATION")
+            if ((ex1.Extensions?.errorType) != "AUTHORIZATION" &&
+                // AccessToken期限切れ
+                (ex1.Extensions?.errorType) != "APPLICATION")
             {
+                throw;
+            }
+            try
+            {
+                await credentialManager.RefreshAccessToken();
+                return new FetchReadingsResultSuccess(await ObtainReadings());
+            }
+            catch (OctopusEnergyGraphqlException ex2)
+            {
+                // リフレッシュトークンが異常
+                if ((ex2.Extensions?.errorType) != "VALIDATION")
+                {
+                    throw;
+                }
                 try
                 {
-                    await credentialManager.RefreshAccessToken();
+                    await credentialManager.LoginAsync();
                     return new FetchReadingsResultSuccess(await ObtainReadings());
                 }
-                catch (OctopusEnergyGraphqlException ex2)
+                catch (OctopusEnergyGraphqlException ex3)
                 {
-                    // リフレッシュトークンが異常
-                    if (ex2.Extensions?.errorType == "VALIDATION")
-                    {
-                        try
-                        {
-                            await credentialManager.LoginAsync();
-                            return new FetchReadingsResultSuccess(await ObtainReadings());
-                        }
-                        catch (OctopusEnergyGraphqlException ex3)
-                        {
-                            // ログイン情報が異常
-                            if (ex3.Extensions?.errorType == "VALIDATION")
-                            {
-                                return new FetchReadingsResultFailure(FetchReadingsResultFailureReason.InvalidLoginInfo);
-                            }
-                            else
-                            {
-                                throw;
-                            }
-                        }
-                    }
-                    else
+                    // ログイン情報が異常
+                    if ((ex3.Extensions?.errorType) != "VALIDATION")
                     {
                         throw;
                     }
+                    return new FetchReadingsResultFailure(FetchReadingsResultFailureReason.InvalidLoginInfo);
                 }
-            }
-            else
-            {
-                throw;
             }
         }
 

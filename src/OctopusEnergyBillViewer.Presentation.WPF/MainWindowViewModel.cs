@@ -14,7 +14,7 @@ public class MainWindowViewModel : ViewModelBase
     public ReactivePropertySlim<decimal> CostYesterday { get; } = new();
 
     public ReactivePropertySlim<SeriesCollection> SeriesCollection { get; } = new();
-    public ReactivePropertySlim<string[]> Labels { get; } = new();
+    public ReactivePropertySlim<IList<string>> Labels { get; } = new();
     public ReactivePropertySlim<Func<decimal, string>> Formatter { get; } = new();
 
     public ReactiveCommand LoadedCmd { get; } = new();
@@ -58,23 +58,15 @@ public class MainWindowViewModel : ViewModelBase
                 var result = await appService.FetchReadings(DateTime.Today.AddDays(-7), DateTime.Today);
                 if (result is FetchReadingsResultSuccess success)
                 {
-                    var labels = new List<string>();
                     var values = new ChartValues<decimal>();
-
                     var groups = success.Readings.GroupBy(x => new { x.StartAt.Year, x.StartAt.Month, x.StartAt.Day });
                     foreach (var group in groups)
                     {
-                        labels.Add($"{group.Key.Year}/{group.Key.Month}/{group.Key.Day}");
                         values.Add(group.Sum(x => x.Usage.Value));
                     }
-
-                    Labels.Value = labels.ToArray();
-                    SeriesCollection.Value = new SeriesCollection()
-                    {
-                        new ColumnSeries() { Title = "使用量", Values = values }
-                    };
-                    
-                    Formatter.Value = value => value.ToString("N");
+                    Labels.Value = groups.Select(x => $"{x.Key.Year}/{x.Key.Month}/{x.Key.Day}").ToList();
+                    SeriesCollection.Value = [new ColumnSeries() { Title = "使用量", Values = values }];
+                    Formatter.Value = x => x.ToString("N");
                 }
                 else if (result is FetchReadingsResultFailure failure)
                 {
