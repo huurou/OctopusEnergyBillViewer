@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="NLog.Extensions.Logging" Version="5.3.8" />
     <PackageReference Include="ReactiveProperty.WPF" Version="9.3.4" />
